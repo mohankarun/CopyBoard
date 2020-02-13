@@ -106,13 +106,23 @@ class ClipBoard {
     func copy(value: String){
         pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
         pasteboard.setString(value, forType: NSPasteboard.PasteboardType.string)
-        
+        self.current = value
+        self.history = rearrange(array:history , fromIndex: history.firstIndex(of: value)! , toIndex: (history.count - 1))
+        menu.menuNeedsUpdate(_menu: menu)
     }
     
     func clear(){
         self.history = []
         self.current = ""
         menu.menuNeedsUpdate(_menu: menu)
+    }
+    
+    func rearrange<String>(array: Array<String>, fromIndex: Int, toIndex: Int) -> Array<String>{
+        var arr = array
+        let element = arr.remove(at: fromIndex)
+        arr.insert(element, at: toIndex)
+        
+        return arr
     }
     
     
